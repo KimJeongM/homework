@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0}
+        html, body{margin:0; padding:0; overflow:hidden; height:100vh}
+        h1{font-size:30px; margin-block:150px 50px; text-align:center;}
+        #scroll_container{position:fixed; user-select:none; white-space:nowrap;}
+        #scroll_container .wrapper{cursor:grab ; transition:all ease 0.4s; transform-origin: center;}
+        #scroll_container .wrapper.drag{cursor:grabbing; transform:scale(0.95)}
+        .bloc{display:inline-block; width:440px; height:300px; background:#000; margin:25px; flex-shrink:0;}
+        .bloc:first-child{background:red}
+        .bloc:last-child{background:red}
+        .progress-bar{margin-top:50px; height:3px; width:90%; background:#ccc; position:fixed; bottom:250px; left:50%; transform:translateX(-50%)}
+        .scroll-bar{width:20%; background:gray; height:100%; position:absolute; left:0; top:0}
+
+        /* 
+        1. progress bar 완성하기 
+        2. 안에 이미지 패럴랙스로 이동하기 하려고 하는 코드드랍처럼 
+        3. github에 계정파기 
+        */
+    </style>
+</head>
+<body>
+    <h1>virtual scroll</h1>
+    <div id="scroll_container">
+		<div class="wrapper">
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+			<div class="bloc"></div>
+        </div>
+    </div>
+    <div class="progress-bar"><span class="scroll-bar"></span></div>
+    <script>
+        const scrollSection = document.querySelector('#scroll_container'); 
+        const ease = 0.1; 
+        let targetX = 0;
+        let currentX = 0;  
+        let dragFlag = false; 
+        let myTimer;
+        let prevX;  
+
+        const setTarget = (value)=>{
+            targetX += value *2.25; //targetX가 쌓여 있으므로 mousedown을 할때마다 translateX의 값을 가지고 오지 않아도 된다. 
+            targetX = Math.max((scrollSection.offsetWidth - window.innerWidth) * -1, targetX); 
+            targetX = Math.min(0, targetX); 
+        }
+
+        const mousedown = (e)=>{
+            dragFlag = true; 
+            
+            scrollSection.addEventListener('mousemove', mousemove); 
+        }
+
+        const mousemove = (e)=>{
+            if(!dragFlag) return; 
+
+            setTarget(e.movementX); 
+            console.log(e.clientX , scrollSection.offsetTop)
+        }
+
+        const mouseup = (e)=>{
+            console.log('mouseup')
+            dragFlag = false; 
+            scrollSection.removeEventListener('mousemove', mousemove); 
+        }
+
+        const req = ()=>{
+            myTimer = requestAnimationFrame(req); 
+            currentX += (targetX - currentX)* ease; 
+            scrollSection.style.transform = `translateX(${currentX}px)`; 
+            console.log('in')
+
+            prevX = currentX; 
+            if(myTimer){
+                setTimeout(()=>{
+                   // (prevX == currentX) && cancelAnimationFrame(myTimer); 
+                }, 5000)
+            }
+        }
+        req()
+        
+
+        scrollSection.addEventListener('mousedown', mousedown); 
+        scrollSection.addEventListener('mouseup', mouseup);
+        document.addEventListener('click', (e)=>{
+            mouseup()
+        })
+
+
+        const getTransformVal = ()=>{
+            let match = scrollSection.style.transform.match(/(-?\d+(\.\d+)?)/);
+            if(match && match.length > 1){
+                return parseFloat(match[1])
+            }else{
+                return 0; 
+            }
+        }
+
+
+
+    </script>
+</body>
+</html>
