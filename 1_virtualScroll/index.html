@@ -64,6 +64,10 @@
             targetX = Math.min(0, targetX); 
         }
 
+        const progressBarShow = ()=>{
+            console.log(targetX)
+        }
+
         const mousedown = (e)=>{
             dragFlag = true; 
             
@@ -74,11 +78,9 @@
             if(!dragFlag) return; 
 
             setTarget(e.movementX); 
-            console.log(e.clientX , scrollSection.offsetTop)
         }
 
         const mouseup = (e)=>{
-            console.log('mouseup')
             dragFlag = false; 
             scrollSection.removeEventListener('mousemove', mousemove); 
         }
@@ -87,7 +89,6 @@
             myTimer = requestAnimationFrame(req); 
             currentX += (targetX - currentX)* ease; 
             scrollSection.style.transform = `translateX(${currentX}px)`; 
-            console.log('in')
 
             prevX = currentX; 
             if(myTimer){
