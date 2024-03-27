@@ -15,12 +15,10 @@
         .bloc:first-child{background:red}
         .bloc:last-child{background:red}
         .progress-bar{margin-top:50px; height:3px; width:90%; background:#ccc; position:fixed; bottom:250px; left:50%; transform:translateX(-50%)}
-        .scroll-bar{width:20%; background:gray; height:100%; position:absolute; left:0; top:0}
+        .bar{width:0%; background:gray; height:100%; position:absolute; left:0; top:0}
 
         /* 
-        1. progress bar 완성하기 
-        2. 안에 이미지 패럴랙스로 이동하기 하려고 하는 코드드랍처럼 
-        3. github에 계정파기 
+        2. 안에 이미지 패럴랙스로 이동하기 하려고 하는 코드드랍처럼  ****************
         */
     </style>
 </head>
@@ -48,15 +46,18 @@
 			<div class="bloc"></div>
         </div>
     </div>
-    <div class="progress-bar"><span class="scroll-bar"></span></div>
+    <div class="progress-bar"><span class="bar"></span></div>
     <script>
         const scrollSection = document.querySelector('#scroll_container'); 
+        const progress = document.querySelector('.progress-bar')
+        const progressW = progress.offsetWidth; 
         const ease = 0.1; 
         let targetX = 0;
         let currentX = 0;  
         let dragFlag = false; 
         let myTimer;
         let prevX;  
+        let stopping = false; 
 
         const setTarget = (value)=>{
             targetX += value *2.25; //targetX가 쌓여 있으므로 mousedown을 할때마다 translateX의 값을 가지고 오지 않아도 된다. 
@@ -64,13 +65,8 @@
             targetX = Math.min(0, targetX); 
         }
 
-        const progressBarShow = ()=>{
-            console.log(targetX)
-        }
-
         const mousedown = (e)=>{
             dragFlag = true; 
-            
             scrollSection.addEventListener('mousemove', mousemove); 
         }
 
@@ -86,16 +82,16 @@
         }
 
         const req = ()=>{
+            // requestAnimationFrame은 변화가 없으면 멈춘다. 
             myTimer = requestAnimationFrame(req); 
-            currentX += (targetX - currentX)* ease; 
-            scrollSection.style.transform = `translateX(${currentX}px)`; 
+            
+            currentX += Math.round(((targetX - currentX)* ease) * 1000) / 1000; 
+            const per = Math.round((Math.abs(currentX) * 100 / (scrollSection.offsetWidth - window.innerWidth) * 1000)) / 1000
+            console.log(per)
 
-            prevX = currentX; 
-            if(myTimer){
-                setTimeout(()=>{
-                   // (prevX == currentX) && cancelAnimationFrame(myTimer); 
-                }, 5000)
-            }
+            scrollSection.style.transform = `translateX(${currentX}px)`; 
+            progress.querySelector('.bar').style.width = `${per}%`
+
         }
         req()
         
