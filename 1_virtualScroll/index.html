@@ -11,11 +11,14 @@
         #scroll_container{position:fixed; user-select:none; white-space:nowrap;}
         #scroll_container .wrapper{cursor:grab ; transition:all ease 0.4s; transform-origin: center;}
         #scroll_container .wrapper.drag{cursor:grabbing; transform:scale(0.95)}
-        .bloc{display:inline-block; width:440px; height:300px; background:#000; margin:25px; flex-shrink:0;}
+        .bloc{display:inline-block; width:400px; height:600px; background:#000; margin:25px; flex-shrink:0; position:relative;}
         .bloc:first-child{background:red}
         .bloc:last-child{background:red}
         .progress-bar{margin-top:50px; height:3px; width:90%; background:#ccc; position:fixed; bottom:250px; left:50%; transform:translateX(-50%)}
         .bar{width:0%; background:gray; height:100%; position:absolute; left:0; top:0}
+        .inner-wrap{position:absolute; left:0; top:0; width:100%; height:100%; overflow:hidden;  }
+        .inner-wrap > img{position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; transform-origin:left center}
+        .text-wrap{position:absolute; left:0; top:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:130px; z-index:2; text-shadow:2px 2px 2px rgba(0,0,0,0.3) ;}
 
         /* 
         2. 안에 이미지 패럴랙스로 이동하기 하려고 하는 코드드랍처럼  ****************
@@ -26,24 +29,66 @@
     <h1>virtual scroll</h1>
     <div id="scroll_container">
 		<div class="wrapper">
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
-			<div class="bloc"></div>
+			<div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">1</div>
+                </div>
+            </div>
+			<div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1566688342604-dbe3e7357104?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">2</div>
+                </div>
+            </div>
+			<div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1472835560847-37d024ebacdc?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">3</div>
+                </div>
+            </div>
+			<div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">4</div>
+                </div>
+            </div>
+			<div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1566688342604-dbe3e7357104?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">5</div>    
+                </div>
+            </div>
+			<div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1472835560847-37d024ebacdc?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">6</div>
+                </div>
+            </div>
+            <div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">7</div>
+                </div>
+            </div>
+			<div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1566688342604-dbe3e7357104?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">8</div>
+                </div>
+            </div>
+			<div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1472835560847-37d024ebacdc?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">9</div>
+                </div>
+            </div>
+            <div class="bloc">
+                <div class="inner-wrap">
+                    <img src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80&amp;ar=0.8" alt="building" class="slider__item-img">
+                    <div class="text-wrap">10</div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="progress-bar"><span class="bar"></span></div>
@@ -58,11 +103,15 @@
         let myTimer;
         let prevX;  
         let stopping = false; 
+        let items;
 
         const setTarget = (value)=>{
             targetX += value *2.25; //targetX가 쌓여 있으므로 mousedown을 할때마다 translateX의 값을 가지고 오지 않아도 된다. 
             targetX = Math.max((scrollSection.offsetWidth - window.innerWidth) * -1, targetX); 
             targetX = Math.min(0, targetX); 
+
+           const max = (scrollSection.offsetWidth - window.innerWidth) * -1; 
+           const p = (currentX - 0) * 100 / (max - 0) / 100; 
         }
 
         const mousedown = (e)=>{
@@ -81,36 +130,69 @@
             scrollSection.removeEventListener('mousemove', mousemove); 
         }
 
+        const setCache = ()=>{
+            items = [] ;
+            [...document.querySelectorAll('.bloc')].forEach((el)=>{
+                const bounds = el.getBoundingClientRect(); 
+
+                items.push({
+                    img : el.querySelector('img'), 
+                    bounds, 
+                    x: 0
+                })
+            }); 
+            
+        }
+
+        const render = () =>{
+            const scrollLast = Math.abs(currentX);
+
+            items.forEach((item, i)=>{
+                const {bounds} = item; 
+
+                const inView = scrollLast + window.innerWidth >= bounds.left && scrollLast < bounds.right;
+                
+                if(inView){
+                    const min = bounds.left - window.innerWidth; 
+                    const max = bounds.right;
+                    const percent = ((currentX - min) * 100) / (max - min); 
+                    
+                    const newMin = (window.innerWidth / 12) * 1; 
+                    const newMax = 0; 
+                    item.x =  ((percent - 0) / (100 - 0)) * (newMax - newMin) + newMin;
+                    item.img.style.transform = `translate3d(${-item.x}px, 0, 0) scale(1.75)`;
+                    console.log(item)
+                    
+                } 
+            })
+        }
+        
+
         const req = ()=>{
             // requestAnimationFrame은 변화가 없으면 멈춘다. 
             myTimer = requestAnimationFrame(req); 
             
             currentX += Math.round(((targetX - currentX)* ease) * 1000) / 1000; 
             const per = Math.round((Math.abs(currentX) * 100 / (scrollSection.offsetWidth - window.innerWidth) * 1000)) / 1000
-            console.log(per)
 
             scrollSection.style.transform = `translateX(${currentX}px)`; 
             progress.querySelector('.bar').style.width = `${per}%`
 
+            render(); 
         }
-        req()
+        setCache()
+        req(); 
+        
         
 
         scrollSection.addEventListener('mousedown', mousedown); 
         scrollSection.addEventListener('mouseup', mouseup);
-        document.addEventListener('click', (e)=>{
-            mouseup()
-        })
+        document.addEventListener('click', (e)=>{mouseup()});
+            
+        
 
 
-        const getTransformVal = ()=>{
-            let match = scrollSection.style.transform.match(/(-?\d+(\.\d+)?)/);
-            if(match && match.length > 1){
-                return parseFloat(match[1])
-            }else{
-                return 0; 
-            }
-        }
+    
 
 
 
