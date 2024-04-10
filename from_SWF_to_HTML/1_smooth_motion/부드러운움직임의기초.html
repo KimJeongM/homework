@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0}
+        body{height:100vh; }
+        .circle{display:inline-block; width:20px; height:20px; background:red; position:absolute; top:300px; left:300px; }
+    </style>
+</head>
+<body>
+    <div class="coord">
+        <p class="mouse">mouseX : <span class="mouseX">0</span> / mouseY : <span class="mouseY">0</span></p>
+    </div>
+    <span class="circle"></span>
+    <script>
+        const circle = document.querySelector('.circle'); 
+        const speed = 0.05;
+        let mouseInfo = {x : circle.offsetLeft, y : circle.offsetTop};
+        let prevInfo={x : circle.offsetLeft, y : circle.offsetTop};
+
+        const loop = ()=>{
+            const posX =prevInfo.x + (mouseInfo.x -  prevInfo.x) * speed; 
+            const posY =prevInfo.y + (mouseInfo.y -  prevInfo.y) * speed; 
+
+            // circle.offsetLeft와 offsetTop을 사용하면 spped가 낮을수록 정확도가 떨어진다. 정확하게 posX, poxY를 저장해야만 한다. 
+            // 스피드가 떨어지더라도 정확한 지점에 오는 것이 중요하다. 
+            prevInfo = {x : posX, y : posY}  
+            circle.style.cssText = `left:${posX}px; top:${posY}px`;
+
+            requestAnimationFrame(loop); 
+        }
+
+        document.addEventListener('click', (e)=>{
+            mouseInfo = {x : e.pageX , y:e.pageY }; 
+            document.querySelector('.coord .mouseX').textContent = e.pageX;
+            document.querySelector('.coord .mouseY').textContent = e.pageY;
+           //loop가 안으로 들어오면 모션의 수식이 쌓여서 부드럽게 이동하는 것이 없어진다.. 
+           //클릭할때마다  loop를 호출하면 requestAnimationFrame이 쌓이는 듯하다.
+        }); 
+        loop()
+    </script>
+</body>
+</html>
