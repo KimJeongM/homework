@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box}
+        body::before{content:''; display:inline-block; width:1px; height:100vh; background:red; position:absolute; left:50%; top:0}
+        .wrap{border:1px solid red; width:720px; height:400px; margin:200px auto; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden }
+        .list-wrap{position:relative;  display:flex; align-items:center; justify-content:center; position:absolute}
+        ul{display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        li{list-style-type:none; width:72px; height:72px; color:#fff; --hue:calc((360/20)*var(--index)); background:hsl(var(--hue), 50%, 30%); flex-shrink:0; text-align:center; line-height: 72px;}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="list-wrap">
+            <ul class="list">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+            </ul>
+        </div>
+        
+    </div>
+    <script>
+        const wrap = document.querySelector('.wrap'); 
+        const listWrap = wrap.querySelector('.list-wrap'); 
+        const list = listWrap.querySelector('.list');
+        const speed = 0.01; 
+        let prevX = listWrap.offsetLeft; 
+        let mouseX = 0; 
+        let startP
+        
+        const init = ()=>{
+            list.querySelectorAll('li').forEach((item, i)=>{
+                item.style.setProperty('--index', i)
+            }); 
+
+            for(let i = 0; i<2; i++){
+                listWrap.appendChild(list.cloneNode(true))
+            }
+            startP = listWrap.offsetWidth/2 * - 1 + (720/2); // 중앙 배치를 위한 공식 
+            listWrap.style.left = `${startP}px`
+
+         loop();
+        }
+
+        const loop = () =>{
+            requestAnimationFrame(loop)
+            let posX = prevX + (mouseX - 0) * speed; 
+
+            if(posX < -1440 || posX > 0){
+                posX = -720 // 가운데 리스트로 돌아간다.. 
+            }
+            /* if(posX <  listWrap.offsetWidth/2 * - 1){
+                posX = -360
+            }else if(posX > 0){
+                posX = -720;
+            } */
+            prevX = posX;
+            listWrap.style.cssText = `left : ${posX}px;`;
+
+        }
+
+        document.addEventListener('mousemove', (e)=>{
+            mouseX = (e.pageX - window.innerWidth/2); 
+            console.log(mouseX)
+        })
+        
+        init(); 
+
+        
+    </script>
+</body>
+</html>
