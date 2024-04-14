@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         *{margin:0; padding:0}
+        body{height:100vh; background:#666}
+        .tri{display:inline-block; width:0; height:0; border:20px solid transparent; border-top-color:#fff; position:absolute;}
+    </style>
+</head>
+<body>
+    <span class="tri"></span>
+    <span class="tri"></span>
+    <script>
+         const cires = [...document.querySelectorAll('.tri')];
+        let prevInfo ;
+        let randomPos;
+
+        const init = () =>{
+            prevInfo = cires.map((item)=> {
+                return {x : item.offsetLeft, y : item.offsetTop}; 
+            })
+            randomPos = cires.map((item)=> {
+                return getPosition(); 
+            })
+            loop()
+        }
+
+        const loop = () =>{
+           
+            const random = 20;
+            cires.forEach((cir, i)=>{
+                if(Math.floor(Math.random() *(random - 1) + 1) == 1){ // 1/8의 확률로 target의 점을 설정하라..
+                    randomPos[i] = getPosition(); 
+                }
+                const posX = prevInfo[i].x + 0.05 *(randomPos[i].x - prevInfo[i].x); 
+                const posY = prevInfo[i].y + 0.05 *(randomPos[i].y - prevInfo[i].y); 
+                const diffX = randomPos[i].x - prevInfo[i].x;
+                const diffY = randomPos[i].y - prevInfo[i].y;
+                const rotate = Math.atan2(diffY, diffX) * 180 / Math.PI
+
+                cir.style.cssText = `left : ${posX}px; top:${posY}px; transform:rotate(${rotate}deg)`; 
+
+                prevInfo[i].x = posX; 
+                prevInfo[i].y = posY; 
+
+            })
+            requestAnimationFrame(loop)
+        }
+
+        const getPosition = ()=>{
+            return {
+                x : Math.random() * (window.innerWidth - 20), 
+                y : Math.random() * (window.innerHeight - 20) 
+            }
+        }
+
+        init()
+    </script>
+</body>
+</html>

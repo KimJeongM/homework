@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0}
+        body{height:100vh; background:#666}
+        .cir{width:20px; height:20px; background:#fff; border-radius:50%; display:inline-block; filter: drop-shadow(2px 2px 4px rgba(255, 255, 255, 0.5)) ; position:absolute}
+    </style>
+</head>
+<body>
+    <span class="cir"></span>
+    <span class="cir"></span>
+
+    <script>
+        const cires = [...document.querySelectorAll('.cir')];
+        let prevInfo ;
+        let randomPos;
+
+        const init = () =>{
+            prevInfo = cires.map((item)=> {
+                return {x : item.offsetLeft, y : item.offsetTop}; 
+            })
+            randomPos = cires.map((item)=> {
+                return getPosition(); 
+            })
+            loop()
+        }
+
+        const loop = () =>{
+           
+            const random = 15
+            cires.forEach((cir, i)=>{
+                if(Math.floor(Math.random() *(random - 1) + 1) == 1){ // 1/8의 확률로 target의 점을 설정하라..
+                    randomPos[i] = getPosition(); 
+                }
+                const posX = prevInfo[i].x + 0.1 *(randomPos[i].x - prevInfo[i].x); 
+                const posY = prevInfo[i].y + 0.1 *(randomPos[i].y - prevInfo[i].y); 
+
+                cir.style.cssText = `left : ${posX}px; top:${posY}px`; 
+
+                prevInfo[i].x = posX; 
+                prevInfo[i].y = posY; 
+
+            })
+            requestAnimationFrame(loop)
+        }
+
+        const getPosition = ()=>{
+            return {
+                x : Math.random() * (window.innerWidth - 20), 
+                y : Math.random() * (window.innerHeight - 20) 
+            }
+        }
+
+        init()
+    </script>
+    
+</body>
+</html>

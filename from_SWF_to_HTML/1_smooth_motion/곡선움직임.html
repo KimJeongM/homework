@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0}
+        body{height:100vh; background:#666; overflow:hidden;}
+        .guide{width:30px; height:30px; background:red; position:absolute; display:inline-block; visibility: hidden;}
+        .cir{width:30px; height:30px; background:blue; border-radius: 50%; position:absolute; display:inline-block}
+    </style>
+</head>
+<body>
+    <span class="guide"></span>
+    <span class="guide"></span>
+    <span class="cir"></span>
+    <span class="cir"></span>
+    <script>
+        const guide = document.querySelector('.guide');
+        const cir = document.querySelector('.cir');
+
+        class SmoothMove{
+            constructor(selector, sp = 0.2, target){
+                this.selector = [...document.querySelectorAll(selector)]; 
+                this.speed = sp; 
+                this.target = [...document.querySelectorAll(target)]; 
+                this.targetInfo;  
+                this.prevInfo; 
+
+                this.init(); 
+            }
+
+            init(){
+                this.prevInfo = this.selector.map((item)=>{
+                    return {x:item.offsetLeft, y:item.offsetTop}
+                }); 
+                
+                if(this.target.length > 0){
+                    this.targetInfo = this.target.map((item, i)=>{
+                        return {x : item.offsetLeft, y : item.offsetTop}
+                    })
+                }else{
+                    this.targetInfo = this.selector.map((item, i)=>{
+                        return this.getPosition(); 
+                    });
+                }
+                this.loop = this.loop.bind(this); 
+                this.loop(); 
+            }
+
+            loop(){
+                const random = 15; 
+                this.selector.forEach((item, i)=>{
+                    if(this.target.length == 0){
+                        if(Math.round(Math.random() * (random  - 1) + 1) == 1){
+                            this.targetInfo[i] = this.getPosition()
+                        }
+                    }else{
+                        this.targetInfo[i] = {x : this.target[i].offsetLeft, y : this.target[i].offsetTop}
+                    }
+                   
+                    const posX = this.prevInfo[i].x + this.speed * (this.targetInfo[i].x - this.prevInfo[i].x); 
+                    const posY = this.prevInfo[i].y + this.speed * (this.targetInfo[i].y - this.prevInfo[i].y); 
+
+                    item.style.cssText = `left:${posX}px; top:${posY}px`; 
+
+                    this.prevInfo[i].x = posX; 
+                    this.prevInfo[i].y = posY; 
+                }); 
+
+                requestAnimationFrame(this.loop)
+            }
+
+            getPosition(){
+                return {
+                    x : Math.random() * window.innerWidth,
+                    y : Math.random() * window.innerHeight + 100
+                }
+            }
+        }
+
+        new SmoothMove('.guide');
+        new SmoothMove('.cir', 0.05, '.guide');
+    </script>
+</body>
+</html>

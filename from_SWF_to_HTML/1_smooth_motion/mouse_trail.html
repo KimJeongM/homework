@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0}
+        body{height:100vh}
+        span{display:inline-block; width:50px; aspect-ratio:1/1; position:absolute; background:red; border-radius: 50%; left:50%; opacity:0.3; top:50%; }
+        .cir1{width:30px; opacity:0.5;}
+        .cir2{width:15px;  opacity:1}
+    </style>
+</head>
+<body>
+    <span class="cir0"></span>
+    <span class="cir1"></span>
+    <span class="cir2"></span>
+    <script>
+        const cires = [...document.querySelectorAll('span')]; 
+        const mouseInfo = {}; 
+        let prevInfo; 
+
+        const init = () =>{
+            prevInfo = cires.map((item, i)=>{
+                if(i == 0){
+                    mouseInfo.x = item.offsetLeft; 
+                    mouseInfo.y = item.offsetTop; 
+                }
+                item.style.transform = `translate(-50%, -50%);`
+                return {x : item.offsetLeft, y : item.offsetTop}
+            }); 
+           
+            /* 
+            마우스를 움직이지 않는 상태에서 커서의 위치를 알아내는 것은 불가능
+            const event = new Event('mouseenter', {bubbles:true});
+            document.dispatchEvent(event) */;
+
+            loop();
+        }
+
+        document.addEventListener('mousemove', (e)=>{
+            mouseInfo.x = e.pageX;
+            mouseInfo.y = e.pageY;
+        }); 
+
+        const loop = ()=>{
+            cires.forEach((item, i)=>{
+                const posX = prevInfo[i].x + Math.abs(0.1 - (0.15 * (i - 1))) * (mouseInfo.x - prevInfo[i].x - 50 - 35 * i);
+                const posY = prevInfo[i].y + 0.1 * (mouseInfo.y - prevInfo[i].y - item.clientHeight/2);
+
+                item.style.cssText = `left:${posX}px; top:${posY}px`;
+
+                prevInfo[i].x = posX;
+                prevInfo[i].y = posY;
+            }); 
+
+            requestAnimationFrame(loop);
+        }
+
+        init()
+
+    </script>
+</body>
+</html>
