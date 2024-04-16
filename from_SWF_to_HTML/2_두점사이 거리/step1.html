@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0}
+        body{display:grid; height:100vh; place-content:center;}
+       /*  .wrap{width:700px; height:500px; border:1px solid #000; position:relative } */
+        .point-wrap{position:absolute; user-select:none; display:flex; align-items:center; flex-direction: column; cursor: pointer; }
+        .point-wrap input{border:1px solid gray; width:100px }
+        .circle{display:block; width:20px;height:20px; background:green; color:#fff; text-align:center; border-radius: 50%; font-size:11px; margin-top:5px }
+        .txtPos{ font-size:11px;}
+        .p0{left:0; top:0}
+        .p1{left:100px; top:120px}
+        p{text-align:right;padding-right:10px; position:absolute; right:20px; top:10px; border:1px solid red; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <p>eee</p>
+        <div class="point-wrap p0">
+            <input type="text" class="txtPos" readonly>
+            <span class="circle">p0</span>
+        </div>
+        <div class="point-wrap p1">
+            <input type="text"  class="txtPos" readonly>
+            <span class="circle">p1</span>
+        </div>
+    </div>
+    <script>
+        const pointes= [...document.querySelectorAll('.point-wrap')]; 
+        let pointInfo = pointes.map((item)=>({x : item.offsetLeft, y : item.offsetTop})); 
+        distance();
+
+        pointes.forEach((item, i)=>{
+            let startPoint ={}
+            let dragFlag= false;
+            let shiftX;
+            let shiftY;
+            item.addEventListener('mousedown', (e)=>{
+                shiftX = e.clientX - item.getBoundingClientRect().left;
+                shiftY = e.clientY - item.getBoundingClientRect().top;
+
+                dragFlag = true;
+            });
+
+            document.addEventListener('mousemove', (e)=>{
+                if(!dragFlag) return; 
+
+                const posX = e.pageX - shiftX; 
+                const posY = e.pageY - shiftY;
+                item.style.cssText = `left : ${posX}px; top:${posY}px`;
+
+                item.querySelector('.txtPos').value = `x:${posX}px / y:${posY}px`; 
+                pointInfo[i] = {x :posX, y:posY }; 
+                distance();
+            });
+
+            item.addEventListener('mouseup', (e)=>{
+                dragFlag = false;
+            });
+
+            document.addEventListener('click', (e)=>{
+                dragFlag = false;
+                startPoint ={}; 
+                shiftX = 0; 
+                shiftY = 0; 
+            })
+        }); 
+
+        
+
+        function distance(){
+            let diffX = pointInfo[1].x - pointInfo[0].x;
+            let diffY = pointInfo[1].y - pointInfo[0].y;
+            let r = Math.sqrt(diffX * diffX + diffY + diffY); 
+            document.querySelector('p').textContent = Math.round(r)
+        }
+        
+    </script>
+</body>
+</html>
