@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0}
+        body{overflow:hidden; height:100vh}
+        [class *='cir']{width:20px; height:20px; border-radius:50%; cursor:pointer; position:absolute; color:#fff; text-align:center; user-select:none; }
+        .cir1{background:#1A3A6D;  }
+        .cir2{background:#FA7BDE ;}
+        svg{width:100%; height:100vh}
+        svg line{stroke-width:1}
+        .line-info{position:absolute; left:20px; top:20px}
+    </style>
+</head>
+<body>
+    <input type="text" class="line-info">
+    <div class="cir1"></div>
+    <div class="cir2"></div>
+    <svg  xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="80" x2="100" y2="20" stroke="#666" />
+    </svg>
+    <script>
+        let pointArray = [];
+        let line = document.querySelector('line'); 
+        class Move{
+            constructor(selector, index){
+                this.selector = selector; 
+                this.mouseDown = this.mouseDown.bind(this); 
+                this.mouseMove = this.mouseMove.bind(this); 
+                this.mouseUp = this.mouseUp.bind(this); 
+                this.index = index;
+
+                this.dragOffsetX;
+                this.dragOffsetY; 
+                this.dragFlag = false; 
+
+                this.selector.addEventListener('mousedown', this.mouseDown);
+                document.addEventListener('mousemove', this.mouseMove);
+                this.selector.addEventListener('mouseup', this.mouseUp);
+                this.hafW = this.selector.offsetWidth/2; 
+
+                this.init();
+            }
+
+            init(){
+                const x = Math.round(Math.random() * window.innerWidth - this.hafW); 
+                const y = Math.round(Math.random() * window.innerHeight - this.hafW);
+                this.selector.style.cssText = `left:${x}px; top:${y}px`; 
+
+                pointArray[this.index] = this.pointInfo; 
+                this.lineShow(); 
+            }
+
+            mouseDown(e){
+                this.dragFlag = true; 
+                this.dragOffsetX = e.clientX - this.selector.getBoundingClientRect().left; 
+                this.dragOffsetY = e.clientY - this.selector.getBoundingClientRect().top; 
+            }
+
+            mouseMove(e){
+                if(!this.dragFlag) return ; 
+                const posX = e.pageX - this.dragOffsetX; 
+                const posY = e.pageY - this.dragOffsetY; 
+
+                this.selector.style.cssText = `left:${posX}px; top:${posY}px`; 
+                pointArray[this.index] = this.pointInfo; 
+                this.lineShow(); 
+            }
+
+            mouseUp(e){
+                this.dragFlag = false; 
+                this.dragOffsetX = 0
+                this.dragOffsetY = 0
+            }
+
+            get pointInfo(){
+                return {x: this.selector.offsetLeft, y:this.selector.offsetTop}
+            }
+
+            lineShow(){
+                let obj = {}
+                pointArray.forEach((item, i)=>{
+                    obj['x' + (i + 1)] = item.x;
+                    obj['y' + (i + 1)] = item.y;
+                });
+
+                if('x2' in obj){
+                    line.setAttribute('x1', obj.x1 + this.hafW);
+                    line.setAttribute('x2', obj.x2 + this.hafW);
+                    line.setAttribute('y1', obj.y1 + this.hafW);
+                    line.setAttribute('y2', obj.y2 + this.hafW);
+
+                    const diffX = (obj.x2 - obj.x1);
+                    const diffY = (obj.y2 - obj.y1);
+                    document.querySelector('.line-info').value = '두 점사이의 거리 : ' +  Math.round( Math.sqrt(diffX * diffX + diffY * diffY));
+                }
+            }
+        }//Move
+
+        [...document.querySelectorAll('[class *= "cir"]')].forEach((item, i)=>{
+            let p = new Move(item, i); 
+        }); 
+    </script>
+</body>
+</html>

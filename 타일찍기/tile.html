@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box;}
+        .wrap{border:1px solid red; position:relative; margin:150px; width:500px; height:500px}
+        .box{width:100px; height:100px; position:absolute; background:#eee }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        
+    </div>
+    <script>
+        const wrap = document.querySelector('.wrap'); 
+        const wrapInfo = {x : wrap.offsetLeft, y:wrap.offsetTop}
+        const box = document.createElement("div");
+        box.classList.add('box'); 
+        wrap.appendChild(box); 
+        const w = box.clientWidth; 
+        const h = box.clientHeight;
+        const gap = 20; 
+        const line = 4; 
+        wrap.removeChild(box);
+        
+        for(let  i=0; i<16; i++){
+            const posX =( i % line) * w +  ((i % line) * gap); 
+            const posY = Math.floor(i / line) * h + ( Math.floor(i / line) * gap); 
+            createEle(posX, posY, i); 
+        }
+
+        function createEle(posX = 0, posY = 0, i=0){
+            const box = document.createElement("div");
+            box.classList.add('box'); 
+            box.textContent = i
+            wrap.appendChild(box); 
+            box.style.cssText = `left:${posX}px; top:${posY}px`; 
+        }
+
+        wrap.addEventListener('click', (e)=>{
+            if(e.target.classList.contains('box')){
+                const x = Math.floor((e.pageX - wrapInfo.x)/(w + gap))
+                const y = Math.floor((e.pageY - wrapInfo.y)/(h + gap))
+                const tileNum = x + y * line;
+                console.log(tileNum)
+            }
+        })
+    </script>
+</body>
+</html>
