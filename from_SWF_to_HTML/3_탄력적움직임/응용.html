@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box;}
+        body{height:100vh; background:#666}
+        .circle{--size:30px;width:var(--size); height:var(--size); border-radius:50%; position:absolute; background:#fff; left:50%; top:50%; margin:calc(var(--size)*-1/2) 0 0 calc(var(--size)*-1/2)}
+    </style>
+</head>
+<body>
+    <div class="circle"></div>
+    <script>
+        /*
+            1. 마우스와 공의 거리가 50이하이면 공은 마우스를 따라다닌다. 
+            2. 마우스와 공의 거리가 50이상이 되면 공은 처음자리로 온다. 
+
+            마우스가 움직이면서 공과의 거리를 계산한다. 
+            거리가 50미만이라면 마우스와 공이 같이 다니고 
+            거리가 50이상이면 처음의 위치를 찾아간다. 
+        */
+        const circle = document.querySelector('.circle');
+        const startPointInfo = {x : circle.offsetLeft, y : circle.offsetTop};
+        let prevInfo = {x : circle.offsetLeft, y : circle.offsetTop};
+        let mouseInfo = {x : 0, y : 0};
+
+        const smoothMove = (speed, targetX, targetY) =>{
+            const posX = prevInfo.x + speed * (targetX - prevInfo.x)
+            const posY = prevInfo.y + speed * (targetY - prevInfo.y)
+
+            circle.style.cssText = `left : ${posX}px; top:${posY}px`; 
+            prevInfo  = {x :posX, y : posY}
+        }
+
+        const elasticMove = (a, b, targetX, targetY) =>{
+            const tempX = circle. offsetLeft;
+            const tempY = circle.offsetTop; 
+            const posX = a * (prevInfo.x - targetX) + b *(prevInfo.x - targetX) + targetX; 
+            const posY = a * (prevInfo.y - targetY) + b *(prevInfo.y - targetY) + targetY; 
+            circle.style.cssText = `left : ${posX}px; top:${posY}px`; 
+
+            prevInfo = {x : tempX, y : tempY}; 
+        }
+
+        document.addEventListener('mousemove', (e)=>{
+            mouseInfo = {x : e.pageX, y:e.pageY}; 
+        }); 
+
+        const diff = (x1, y1, x2, y2) =>{
+            const diffX = x2 - x1; 
+            const diffY = y2 - y1; 
+            return Math.round(Math.sqrt(diffX * diffX + diffY * diffY));
+        }
+
+        const loop = () =>{
+           requestAnimationFrame(loop)
+           if(diff(prevInfo.x, prevInfo.y, mouseInfo.x, mouseInfo.y) < 50){
+                smoothMove(0.2, mouseInfo.x, mouseInfo.y)
+           }else{
+                console.log('out')
+                elasticMove(1.2, -0.5, startPointInfo.x, startPointInfo.y)
+           }
+        }
+
+        loop()
+    </script>
+</body>
+</html>
