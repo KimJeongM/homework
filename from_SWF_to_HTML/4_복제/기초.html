@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{background:#666; overflow-x:hidden;}
+        .circle{width:50px; height:50px; background:Red; animation:move 2s 1 alternate; filter:blur(2px) ; border-radius: 50%; position:absolute; left:-9999px; top:0; visibility: hidden;}
+        @keyframes move{
+            0%{background:red;}
+            25%{background:yellow}
+            50%{background:greenyellow}
+            75%{background:blue}
+            100%{background:violet}
+        }
+    </style>
+</head>
+<body>
+    <div class="circle"></div>
+    <script>
+        const circle = document.querySelector('.circle'); 
+        let mouseInfo = {x : 0, y : 0}
+        let circleInfo = []
+        const count = 200; 
+        
+
+        document.addEventListener('mousemove', (e)=>{
+            mouseInfo.x = e.pageX; 
+            mouseInfo.y = e.pageY
+        }); 
+
+     
+
+        const loop = ()=>{
+            requestAnimationFrame(loop); 
+            const copy = circle.cloneNode(false); 
+            //circle.hidden = true
+
+            if(circleInfo.length < count){
+                circleInfo.push(copy); 
+
+                circleInfo.map((item, i)=>{
+                    document.body.append(copy); 
+                    copy.style.cssText = `left : ${mouseInfo.x}px; top: ${mouseInfo.y}px; visibility: visible`; 
+
+                    copy.addEventListener('animationend', (e)=>{
+                        copy.remove(); 
+                        circleInfo.splice(i, 1);
+                    })
+                })
+            }
+        }
+
+        loop()
+
+        
+    </script>
+</body>
+</html>

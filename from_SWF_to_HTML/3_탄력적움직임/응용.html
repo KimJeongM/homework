@@ -57,10 +57,9 @@
         const loop = () =>{
            requestAnimationFrame(loop)
            if(diff(prevInfo.x, prevInfo.y, mouseInfo.x, mouseInfo.y) < 50){
-                smoothMove(0.2, mouseInfo.x, mouseInfo.y)
+                smoothMove(0.2, mouseInfo.x, mouseInfo.y);
            }else{
-                console.log('out')
-                elasticMove(1.2, -0.5, startPointInfo.x, startPointInfo.y)
+                elasticMove(1.2, -0.5, startPointInfo.x, startPointInfo.y);
            }
         }
 
