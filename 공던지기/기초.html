@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box; }
+        .ball{width:30px; height:30px; border-radius:50%; background:red; position:absolute; left:0; top:0}
+        .table{width:800px; height:500px; background:green; margin:50px; position:relative}
+    </style>
+</head>
+<body>
+    <div class="table">
+        <div class="ball"></div>
+    </div>
+    <script>
+        function Billiards(){
+            this.ball = document.querySelector('.ball'); 
+            this.table = document.querySelector('.table'); 
+            this.max_x =  this.table.clientWidth - this.ball.clientWidth; 
+            this.max_y = this.table.clientHeight - this.ball.clientWidth; 
+
+            
+            this.run = 0; //0은 중지, 1은 실행
+            this.timer = null; 
+            this.di_x = 1; 
+            this.di_y = 1; 
+            this.speed = 0; 
+            this.dx = 0; 
+            this.dy = 0;
+            this.p_xy = 0; //기울기 기울기는 
+            this.b_x = this.ball.offsetLeft; 
+            this.b_y = this.ball.offsetTop; 
+
+
+
+            this.init()
+        }
+
+        Billiards.prototype.init = function(){
+            this.ball.style.left = this.ball.offsetLeft + "px";
+            this.ball.style.top = this.ball.offsetTop + "px";
+            if(this.run === 0){
+                clearInterval(this.timer);
+            }else{
+                this.move();
+            }
+        }
+
+        Billiards.prototype.move = function(){
+            if(arguments.length == 2){
+                this.di_x = arguments[0]; 
+                this.di_y = arguments[1]; 
+            }
+
+            this.timer = setInterval(()=>{
+                if(this.run == 0) return; 
+
+                let vx = this.speed / Math.sqrt(1 + this.p_xy * this.p_xy) * this.di_x; // 기울기로 x 방향 속도를 구하는 법
+                let vy = Math.abs(vx) * this.p_xy * this.di_y; //기울기로 y방향 속도를 구하는 법 
+                let left = parseFloat(this.ball.style.left); 
+                let top = parseFloat(this.ball.style.top); 
+                this.ball.style.left = left + vx + 'px'; 
+                this.ball.style.top = top + vy + 'px'; 
+
+                this.speed -= 0.01; 
+                if(this.speed <= 0){
+                    clearInterval(this.timer); 
+                    this.run = 0; 
+                    return; 
+                }
+
+                if(parseFloat(this.ball.style.left ) >= this.max_x
+                    || parseFloat(this.ball.style.left) <= 0
+                    || parseFloat(this.ball.style.top) >= this.max_y    
+                    || parseFloat(this.ball.style.top) <= 0
+                 ){
+                    clearInterval(this.timer); 
+                    if(parseFloat(this.ball.style.left) >= this.max_x
+                        || parseFloat(this.ball.style.left) <=0
+                    ){
+                        this.move(-this.di_x, this.di_y); 
+                    }
+                    if(parseFloat(this.ball.style.top)>= this.max_y
+                        || parseFloat(this.ball.style.top) <= 0
+                    ){
+                        this.move(this.di_x, -this.di_y);
+                    }
+                 }
+
+
+
+            }, 10)
+        }
+
+        Billiards.prototype.change = function(end_x, end_y){
+            this.run = 0; 
+            this.speed = 8; 
+            this.b_x = this.ball.offsetLeft; 
+            this.b_y = this.ball.offsetTop; 
+            this.dx = end_x - this.b_x; 
+            this.dy = end_y - this.b_y; 
+            this.p_xy = Math.abs(this.dy / this.dx); 
+            this.di_x = (this.dx > 0)? 1 : -1; 
+            this.di_y = (this.dy > 0)? 1 : -1;
+
+            this.run = 1; 
+            this.move(this.di_x, this.di_y);
+        }
+
+        Billiards.prototype.stop = function(){
+            console.log(this)
+            clearInterval(this.timer); 
+        }
+
+
+        let billiards = new Billiards();
+
+        document.querySelector('.table').addEventListener('click', function(e){
+            let end_x = e.clientX - 30; 
+            let end_y = e.clientY - 30; 
+
+            billiards.stop(); 
+            billiards.change(end_x, end_y); 
+        })
+
+
+    </script>
+    
+</body>
+</html>
