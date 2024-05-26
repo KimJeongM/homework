@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box;}
+        body{height:100vh; background:#666}
+        .pointer{width:15px; height:15px; border-radius:50%; background:#fff; display:inline-block; position: absolute}
+    </style>
+</head>
+<body>
+    <p class="state"></p>
+    <button type="button" class="recode-btn">recode</button>
+    <button type="button" class="stop-btn">stop</button>
+    <button type="button" class="play-btn">play</button>
+    <span class="pointer"></span>
+    <script>
+        const pointer = document.querySelector('.pointer'); 
+        const posArray = []; 
+        let myTimer; 
+        let counter = 0; 
+        let moveFlag = false; 
+
+        document.addEventListener('click', (e)=>{
+            let target = e.target; 
+            if(target.tagName.toLowerCase() !== 'button') return; 
+            const action = stateActions[target.textContent]; 
+            if(action) action();
+        }); 
+
+        document.addEventListener('mousemove', (e)=>{
+            if(!moveFlag) return;
+            posArray.push({x : e.pageX, y:e.pageY});
+        }); 
+
+        const stateActions = {
+            recode : () =>{
+                moveFlag = true; 
+            }, 
+            stop : () =>{
+                moveFlag = false; 
+            },
+            play : () =>{
+                moveFlag = false; 
+                counter = 0;
+                loop(); 
+            }
+        }
+        
+        const loop = ()=>{
+            if(counter < posArray.length){
+                pointer.style.cssText = `left : ${posArray[counter].x}px; top : ${posArray[counter].y}px`; 
+                counter ++; 
+                myTimer = requestAnimationFrame(loop)
+            }else{
+                cancelAnimationFrame(loop); 
+            }
+        }
+
+        
+
+
+
+
+    </script>
+</body>
+</html>

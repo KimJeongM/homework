@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box}
+        :root{--duration:10}
+        li{list-style-type:none;}
+        body{height:100vh; background:#666; }
+        .list-container{width:500px; border:1px solid aqua; overflow:hidden; display:flex; align-items:center; margin:200px auto }
+        .list-wrap{display:flex; /* animation: marquee var(--duration) linear infinite running; */ flex-shrink:0; position:relative;}
+        .list{display:flex;  flex-shrink:0; counter-reset:li; background:red; user-select: none;}
+        .list > li{border-radius:10px; padding:10px; background:#f5f6f7; font-size:16px; font-family:verdana; flex-shrink:0; counter-increment:li; margin-left:10px  }
+        .list > li:first-child{margin-left:0}
+        .list > li::before{content:counter(li)'.'}
+        .list:first-child{margin-right:10px}
+        /* @keyframes marquee{
+            0%{transform:translateX(0)}
+            100%{transform:translate(-50%)}
+        } */
+        .box{width:1000px; background:red; height:300px; flex-shrink:0; transform:translateX(-100%)}
+    </style>
+</head>
+<body>
+    <div class="list-container">
+        <div class="list-wrap">
+            <ul class="list">
+                <li>Lorem ipsum dolor sit amet.</li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, magni.</li>
+                <li>Lorem, ipsum.</li>
+                <li>Lorem, ipsum dolor.</li>
+                <li>lorem</li>
+                <li>Lorem ipsum dolor sit amet.</li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, magni.</li>
+                <li>Lorem, ipsum.</li>
+                <li>Lorem, ipsum dolor.</li>
+                <li>lorem</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="list-container">
+        <div class="box"></div>
+    </div>
+    
+    <script>
+        const listWrap = document.querySelector('.list-wrap'); 
+        const list = listWrap.querySelector('.list');
+        
+//marquee를 css로 컨트롤 하지 않고 js로 컨트롤 
+// 이 예시가 끝나고 나서 codepen꺼 하기 
+        function marquee(){
+            listWrap.appendChild(list.cloneNode(true)); 
+
+        }
+
+        
+        
+    </script>
+</body>
+</html>
