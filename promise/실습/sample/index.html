@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box;}
+        body{font-family:Verdana, Geneva, Tahoma, sans-serif; background:#eee; min-height:100vh}
+        h1{text-align:center; margin-block:80px 30px; font-size:50px; font-weight:bold; text-transform: capitalize;}
+        ul > li{list-style: none;}
+        header{width:85vw; max-width:500px; margin:0 auto}
+        input{width:100%; border:none; padding:10px 15px; background:#fff; font-size:16px; border-radius:5px;  }
+        .container{width:95vw; max-width:1170px; margin:0 auto; padding-top:100px;}
+        .list{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:4rem}
+        .item > a{display: block; position:relative; padding:10px; border-radius:5px; background:#fff; box-shadow:3px 3px 3px rgba(00,00,00,0.1);}
+        .item img{width:100%; height:auto; }
+        .name{position:absolute; right:-20px; background:#333; padding:20px; border-radius:5px; font-size:20px; color:#fff; bottom:-20px}
+        .loading{position:absolute; background:#fff; left:0; top:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:bold}
+        .loading.hide-loading{display:none;}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <h1>cocktails api</h1>
+            <input type="search" placeholder="Search">
+        </header>+
+
+
+        
+        <!-- 2일에 걸쳐 실습
+        그 다음에는 혼자 쪽 다시 만들기 -->
+        
+        <div class="container">
+            <p class="title"></p>
+            <div class="loading hide-loading">loading</div>
+            <ul class="list">
+               <!--  <li class="item">
+                    <a href="#">
+                        <img src="https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg" alt="A1">
+                        <p class="name">A1</p>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="#">
+                        <img src="https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg" alt="A1">
+                        <p class="name">A1</p>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="#">
+                        <img src="https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg" alt="A1">
+                        <p class="name">A1</p>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="#">
+                        <img src="https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg" alt="A1">
+                        <p class="name">A1</p>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="#">
+                        <img src="https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg" alt="A1">
+                        <p class="name">A1</p>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="#">
+                        <img src="https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg" alt="A1">
+                        <p class="name">A1</p>
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+    <script type="module" src="./app.js"></script>
+    
+</body>
+</html>
