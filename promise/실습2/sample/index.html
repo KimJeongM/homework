@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box}
+        body{background:#eee;}
+        .wrap{max-width:1170px; width:90vw; display:grid; grid-gap:1rem; margin:4rem auto; grid-template-columns:200px 1fr; }
+        .filter-container{height:200px; background:yellow}
+        .product-container{display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:20px}
+        .img-wrap{position:relative; }
+        .img-wrap:hover .btn-wrap{opacity:1;}
+        .btn-wrap{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); opacity:0}
+        .btn-wrap .btn{text-decoration:none; border:none; outline:none; background:brown; color:#fff; width:50px; height:50px; border-radius: 50%; display:inline-block; text-align:center; font-size:13px; line-height:50px; text-transform: uppercase; }
+        article{width:100%; }
+        article .product-img{height:10rem; width:100%; object-fit:cover; border-radius:5px;}
+        article .desc-wrap{text-align:center; padding:10px 0}
+        article .desc-wrap .name{font-size:16px; color:#666; line-height: 1;}
+        article .desc-wrap .price{color:#999; margin-top:10px}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="filter-container">filter</div>
+        <div class="product-container">
+            <!-- <article>
+                <div class="img-wrap">
+                    <img src="https://course-api.com/images/store/product-1.jpeg" alt="" class="product-img">
+                    <div class="btn-wrap">
+                        <a href="#" class="btn">view</a>
+                        <button type="button" class="btn">cart</button>
+                    </div>
+                </div>
+                <div class="desc-wrap">
+                    <p class="name">aaaa</p>
+                    <p class="price">88,000</p>
+                </div>
+            </article> -->
+        </div>
+    </div>
+    <script type="module" src="product.js"></script>
+</body>
+</html>
