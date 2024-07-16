@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrap show-list">  <!-- show-list -->
+        <header>
+            <button type="button" class="list-toggle-btn"><i class="fas fa-bars"></i></button>
+        </header>
+        <div class="player-container">
+            <div class="music-info">
+               <!--  <div class="music-img"><img src="https://images.saramingig.co.kr/product/F/0/X/F0Xdpaep3WJVpIR.jpeg/o2j/resize/900" alt=""></div>
+                <div class="music-text">
+                    <p class="title">abdbdbdb</p>
+                    <p class="artist">dkdkdk</p>
+                </div>
+                <audio src=""></audio> -->
+            </div>
+            <div class="music-ctrl">
+                <div class="progress">
+                    <div class="progress-bar">
+                        <span class="current">
+                            <span class="cir"></span>
+                        </span>
+                    </div>
+                    <div class="time-info">
+                        <p class="current-time">00:00</p>
+                        <p class="duration">00:00</p>
+                    </div>
+                </div>
+                <div class="btns">
+                    <div class="main-btns">
+                        <button type="button" class="prev-btn" title="prev"><i class="fas fa-step-backward"></i></button>
+                        <button type="button" class="play-btn" title="play"><i class="fas fa-play"></i></button><!-- fa-pause -->
+                        <button type="button" class="next-btn" title="next"><i class="fas fa-step-forward"></i></button>
+                    </div>
+                    <div class="etc-btns">
+                        <button class="volume-btn"><i class="fas fa-volume-down"></i></button>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        <div class="list-container">
+            <ul class="list">
+                <li class="item">
+                    <a href="#" data-music="">
+                        <span class="img"><img src="https://images.saramingig.co.kr/product/F/0/X/F0Xdpaep3WJVpIR.jpeg/o2j/resize/900" alt=""></span>
+                        <div class="music-info">
+                            <p class="title">abdbdbdb</p>
+                            <p class="artist">dkdkdk</p>
+                        </div>
+                    </a>
+                    <button type="button" class="sort-btn"><i class="fas fa-grip-lines"></i></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        document.querySelector('.list-toggle-btn').addEventListener('click', (e)=>{
+            document.querySelector('.wrap').classList.toggle('show-list'); 
+        })
+    </script>
+    <script type="module" src="./app.js"></script>
+</body>
+</html>

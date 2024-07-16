@@ -1,0 +1,79 @@
+@charset "utf-8";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+:root{
+    --transition : all 0.2s cubic-bezier(0.49,0.025,0.65,0.65);
+    --largeSize:302;
+    --smallSize : 92; 
+    --scale : calc(var(--smallSize) / var(--largeSize));
+    --translateX: calc((var(--largeSize) - var(--smallSize)) / 2); 
+    --margin:calc(32px * var(--scale) ); 
+    --textHeight : 38px
+}
+
+*{margin:0; padding:0; box-sizing:border-box;}
+ul li{list-style-type:none ;}
+html, body{height:100%; width:100%; font-family: 'Open Sans';}
+button{font-family:inherit; background:transparent; border:none; outline:none;}
+img{vertical-align:top;}
+a{font-family:inherit; text-decoration:none;}
+body{display:grid; place-content:center;}
+.wrap{height:650px; width:366px; position:relative; overflow:hidden;}
+header{position:absolute; left:0; top:0; padding:0 20px}
+header button{color:#959595;  position:absolute; left:23px; top:20px; font-size:16px;}
+.player-container{display:flex; flex-direction: column; height:100%; background:#111; padding-top:62px; /* transition:var(--transition);  */}
+
+.player-container .music-info{width:100%; flex:1 0 0 ; display:flex; flex-direction: column; align-items:center; justify-content:center; ; }
+.player-container .music-info .music-img{border-radius:8px; overflow:hidden; margin:auto 32px; /* transition:var(--transition) */; width:calc(100% - 32px - 32px)}
+.player-container .music-info .music-img img{width:100%; aspect-ratio: 1/1; object-fit: cover; }
+.player-container .music-info .music-text{margin-top:25px; /* width:70%; */ ; flex:0 0 0;  opacity:1}
+.player-container .music-info .title{font-size:14px; font-weight:700; text-align:center; line-height:16px; color:#fff; margin-bottom:5px; }
+.player-container .music-info .artist{font-size:12px; line-height:12px; font-weight:400; color:#fff; text-align:center; }
+.player-container .btns{margin:25px auto 25px; display:flex; flex-direction: column; width:100%; flex: 1 0 0}
+.player-container .btns .main-btns{width:50%; display:flex; align-items:center; justify-content: space-between; margin:0 auto; }
+.player-container .btns .main-btns button{font-size:20px; color:#fff}
+.player-container .btns .main-btns .play-btn{font-size:34px;}
+.player-container .btns .etc-btns button{font-size:18px; color:rgba(255,255,255,0.5)}
+.player-container .btns .etc-btns{width:80%; margin:auto auto 0; font-size:20px; display:flex; align-items:center; justify-content: space-between; }
+.player-container .btns .etc button{color:#fff}
+
+.player-container .music-ctrl{margin-top:35px; flex:1 1 0; display:flex; flex-direction: column;}
+.player-container .progress{width:80%; margin:0 auto; }
+.player-container .progress .progress-bar{width:100%; height:4px; background:#333332; position:relative}
+.player-container .progress .progress-bar .current{display:inline-block; width:0%; height:100%; background:#fff; position:absolute;}
+.player-container .progress .progress-bar .current .cir{display:inline-block; width:12px; height:12px; background:#fff; position:absolute; right:-6px; top:50%; margin-top:-6px; border-radius:50%}
+.player-container .time-info{display:flex; font-size:11px; color:#777; margin-top:10px; align-items:center; justify-content: space-between;  }
+
+.list-container{position:absolute; left:0; top:180px; width:100%; height:calc(100% - 180px); background:#111; transform:translateY(100%); /* transition: var(--transition) */; overflow:auto; padding:8px 0}
+.list-container .list .item{ font-weight:700; display:flex; font-size:13px; line-height:13px; align-items:center; padding:8px 23px}
+.list-container .list .item > a{display:flex; align-items:center; flex-grow:1; min-width:0}
+.list-container .list .item.is-drag, 
+.list-container .list .item.now{background:#333}
+.list-container .list .item .img{display:inline-block; width:48px; height:48px; margin-right:16px; border-radius: 4px; overflow:hidden; flex:0 0 48px;}
+.list-container .list .item .img img{width:48px; height:48px; }
+.list-container .list .item .music-info{flex:1 0 0; min-width:0}
+.list-container .list .item .music-info .title{font-size:14px; font-weight:700; line-height:16px; margin-bottom:5px; color:#fff; white-space:nowrap; text-overflow: ellipsis; overflow:hidden; min-width:0}
+.list-container .list .item .music-info .artist{font-size:12px; font-weight:400; line-height:14px; color:#aaa}
+.list-container .list .item .sort-btn{width:48px; height:48px; color:#aaa; margin-left:auto; font-size:16px; text-align:right}
+
+.wrap.show-list.motion-ing .music-text{opacity:0}
+.wrap.show-list .music-text{opacity:1}
+.wrap.show-list .player-container{background:#fff;}
+.wrap.show-list .player-container .music-info .music-img{transform:translate(calc(var(--translateX) * -1px - var(--margin)), calc(var(--translateX) * -1px)) scale(var(--scale)); border-radius:20px }
+.wrap.show-list .player-container .music-text{margin-top:0; padding:5px 0 0 15px; transform:translate(calc(var(--smallSize) * 1px /2), calc(var(--largeSize) * -1px )); width:calc(100% - var(--smallSize)*1px - 23px - 23px); text-align:left; transform-origin:0 0; }
+.wrap.show-list .player-container .music-info .title{color:#111; text-align:left}
+.wrap.show-list .player-container .music-info .artist {color:#111; text-align:left}
+
+.wrap.show-list .list-container{transform:translateY(0)}
+/* 
+현재 있는 구조에서 transform으로 공식을 구해서 좌표를 잡는다
+
+.wrap.list-show{}
+.wrap.list-show .list-container{transform:translateY(0)}
+.wrap.list-show .player-container{background:#fff; bordeR:1px solid red}
+.wrap.list-show .music-info{flex-direction: row; flex:0; justify-content: flex-start; padding:0 20px; align-items: flex-start;}
+.wrap.list-show .music-info .music-img{margin-right:20px; flex:0 1 92px}
+.wrap.list-show .music-text{margin-top:0; width:calc(100% - 92px - 20px); padding-top:5px; background:blue; flex: 1 0 0 }
+.wrap.list-show .music-info .title{color:#111; text-align:left}
+.wrap.list-show .music-info .artist {color:#111; text-align:left}
+.wrap.list-show .music-ctrl{opacity:0} */
