@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="wrap show-list">  <!-- show-list -->
+    <div class="wrap">  <!-- show-list -->
         <header>
             <button type="button" class="list-toggle-btn"><i class="fas fa-bars"></i></button>
         </header>
@@ -23,9 +23,8 @@
             <div class="music-ctrl">
                 <div class="progress">
                     <div class="progress-bar">
-                        <span class="current">
-                            <span class="cir"></span>
-                        </span>
+                        <span class="current"></span>
+                        <span class="cir"></span>
                     </div>
                     <div class="time-info">
                         <p class="current-time">00:00</p>
@@ -40,6 +39,10 @@
                     </div>
                     <div class="etc-btns">
                         <button class="volume-btn"><i class="fas fa-volume-down"></i></button>
+                        <div class="vol-progress">
+                            <span class="current"></span>
+                            <span class="cir"></span>
+                        </div>
                     </div>
                     
                 </div>
@@ -60,12 +63,14 @@
                 </li>
             </ul>
         </div>
+        
     </div>
     <script>
         document.querySelector('.list-toggle-btn').addEventListener('click', (e)=>{
             document.querySelector('.wrap').classList.toggle('show-list'); 
-        })
+        }); 
     </script>
     <script type="module" src="./app.js"></script>
+    
 </body>
 </html>

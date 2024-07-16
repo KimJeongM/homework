@@ -1,20 +1,18 @@
 import displaySong from './displaySong.js'; 
-import drag from './drag.js'; 
 import {nowSong} from './makeList.js';
-
+import btnDrag from './btnDrag.js';
 
 let isPlaying = false; 
 let audioData;
 let songIndex;
 const btns = document.querySelector('.btns'); 
 const progress = document.querySelector('.progress'); 
-let audio 
-
+const volProgress = document.querySelector('.vol-progress');
 
 const btnCtl = async (data, index) =>{
     audioData = await data;
     songIndex = await index; 
-    audio = await document.getElementById('audio');
+    setVolume(0.5, true);
 
     btns.querySelector('.prev-btn').addEventListener('click', (e)=>{
         toNextSong(false); 
@@ -28,14 +26,50 @@ const btnCtl = async (data, index) =>{
     });
 
     progress.querySelector('.progress-bar').addEventListener('click', (e)=>{
-        setProgress(e.offsetX);
+        e.stopImmediatePropagation();
+        console.log('barClick')
+        setProgress(e.offsetX); 
+    });
+
+    btns.querySelector('.volume-btn').addEventListener('click', (e)=>{
+        btns.querySelector('.vol-progress').classList.toggle('show')
+    }); 
+
+    document.addEventListener('cirDragEnd', (e)=>{
+       const d = e.detail; 
+        if(d == progress.querySelector('.progress-bar')){
+            const t = progress.querySelector('.cir').style.transform.replace(/[^0-9]/g, ''); 
+            setTimeout(()=>{
+                setProgress(t); 
+            }); 
+        }else{
+            const v = volProgress.querySelector('.cir').style.transform.replace(/[^0-9]/g, '');
+            setVolume(v / volProgress.clientWidth);
+        }
     })
+
+    
+    btnDrag(document.querySelector('.progress-bar'));
+    btnDrag(document.querySelector('.vol-progress')); 
+}
+
+const setVolume = (val, f = false) =>{
+    audio.volume = val;
+    const volBtn = document.querySelector('.volume-btn .fas'); 
+    volBtn.classList.value = (val == 0)? 'fas fa-volume-off' : (val == 1)?  'fas fa-volume-up' : 'fas fa-volume-down';
+    
+    if(f){
+        volProgress.querySelector('.current').style.width = `${val * 100}%`;
+        volProgress.querySelector('.cir').style.transform = `translateX(${volProgress.clientWidth * val}px)`
+    }
 }
 
 const setProgress = (val) =>{
-    const width =  progress.querySelector('.progress-bar').clientWidth; 
-    audio.currentTime = (val / width) * audio.duration; 
+   var percent = val / progress.querySelector('.progress-bar').clientWidth; 
+   if(percent == 0) return ; 
+   audio.currentTime = percent * audio.duration; 
 }
+
 const setSongIndex = (index) =>{
     songIndex = index;
 }
@@ -70,12 +104,12 @@ const toNextSong = (isNext) =>{
         }
     }
 
-    let evt = new CustomEvent('songIndex', {detail : songIndex}); 
+    const evt = new CustomEvent('songIndex', {detail : songIndex}); 
     document.dispatchEvent(evt); 
     displaySong(audioData[songIndex]);
     nowSong(songIndex);
+    setProgress(0);
     playSong();
-    setProgress(0)
 }
 
-export {btnCtl, setProgress};
+export {btnCtl};
