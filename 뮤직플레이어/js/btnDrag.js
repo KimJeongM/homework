@@ -1,45 +1,51 @@
-let selector; 
-let dragFlag = false;
-let area;
-let shiftX = 0; 
-let max;
 
-const btnDrag = (dragSelector) =>{
-    //const touchBool = 'ontouchstart' in document;
-    selector = dragSelector.querySelector('.cir'); 
-    area = dragSelector; 
+
+class BtnDrag{
+    constructor(dragSelector){
+        this.area = dragSelector
+        this.selector = dragSelector.querySelector('.cir');
+        this.dragFlag = false;
+        
+        this.shiftX = 0; 
+        this.max = this.area.offsetWidth;
+
+        this.startHandler =  this.startHandler.bind(this)
+        this.moveHandler = this.moveHandler.bind(this); 
+        this.endHandler = this.endHandler.bind(this); 
+
+        this.selector.addEventListener('mousedown', this.startHandler); 
+        document.addEventListener('mousemove', this.moveHandler); 
+        document.addEventListener('mouseup', this.endHandler); 
+        document.addEventListener('click', this.endHandler, {capture : false}); 
+    }
+
+    startHandler(e){
+        const translateX = this.selector.getBoundingClientRect().left - this.area.getBoundingClientRect().left; 
+        this.shiftX = translateX - e.pageX; 
+        this.dragFlag = true;
+    }
+
+    moveHandler (e){
+        if(!this.dragFlag) return;
     
-    max = area.offsetWidth;
-    selector.addEventListener('mousedown', startHandler); 
-    document.addEventListener('mousemove', moveHandler); 
-    document.addEventListener('mouseup', endHandler); 
-    document.addEventListener('click', endHandler, {capture : false}); 
+        const posX = this.shiftX + e.pageX; 
+        const left = (posX <= 0)? 0 : (posX >= this.max)? this.max : posX;
+        this.selector.style.transform = `translateX(${left}px)`; 
+        this.area.querySelector('.current').style.width = `${(left / this.area.offsetWidth) * 100}%`;
+
+        const cirDragMove = new CustomEvent('cirDragMove', {detail : this.area } ); 
+        document.dispatchEvent(cirDragMove);
+    }
+
+    endHandler(e){
+        e.stopPropagation();
+        e.preventDefault();
+        if(!this.dragFlag) return;
+    
+        const cirDragEnd = new CustomEvent('cirDragEnd', {detail : this.area } ); 
+        document.dispatchEvent(cirDragEnd); 
+        this.dragFlag = false;
+    }
 }
 
-const startHandler = (e) =>{
-    const translateX = selector.getBoundingClientRect().left - area.getBoundingClientRect().left; 
-    shiftX = translateX - e.pageX; 
-    dragFlag = true;
-}
-
-const moveHandler = (e) =>{
-    if(!dragFlag) return;
-
-    const posX = shiftX + e.pageX; 
-    const left = (posX <= 0)? 0 : (posX >= max)? max : posX;
-    selector.style.transform = `translateX(${left}px)`; 
-    area.querySelector('.current').style.width = `${(left / area.offsetWidth) * 100}%`;
-    console.log((left / area.offsetWidth) * 100)
-}
-
-const endHandler = (e) =>{
-    e.stopPropagation();
-    e.preventDefault();
-    if(!dragFlag) return;
-
-    const cirDragEnd = new CustomEvent('cirDragEnd', {detail : area } ); 
-    document.dispatchEvent(cirDragEnd); 
-    dragFlag = false;
-}
-
-export default btnDrag;
+export default BtnDrag;

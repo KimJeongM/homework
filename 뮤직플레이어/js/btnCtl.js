@@ -1,6 +1,7 @@
 import displaySong from './displaySong.js'; 
 import {nowSong} from './makeList.js';
-import btnDrag from './btnDrag.js';
+import BtnDrag from './btnDrag.js';
+import { timeShow } from "../util.js";
 
 let isPlaying = false; 
 let audioData;
@@ -8,11 +9,11 @@ let songIndex;
 const btns = document.querySelector('.btns'); 
 const progress = document.querySelector('.progress'); 
 const volProgress = document.querySelector('.vol-progress');
+//const audio = document.getElementById('audio');
 
 const btnCtl = async (data, index) =>{
     audioData = await data;
     songIndex = await index; 
-    setVolume(0.5, true);
 
     btns.querySelector('.prev-btn').addEventListener('click', (e)=>{
         toNextSong(false); 
@@ -22,12 +23,11 @@ const btnCtl = async (data, index) =>{
     });
 
     btns.querySelector('.play-btn').addEventListener('click', (e)=>{
-        isPlaying? pauseSong() : playSong();
+        (isPlaying ? pauseSong() : playSong())
     });
 
     progress.querySelector('.progress-bar').addEventListener('click', (e)=>{
         e.stopImmediatePropagation();
-        console.log('barClick')
         setProgress(e.offsetX); 
     });
 
@@ -35,22 +35,48 @@ const btnCtl = async (data, index) =>{
         btns.querySelector('.vol-progress').classList.toggle('show')
     }); 
 
-    document.addEventListener('cirDragEnd', (e)=>{
-       const d = e.detail; 
-        if(d == progress.querySelector('.progress-bar')){
-            const t = progress.querySelector('.cir').style.transform.replace(/[^0-9]/g, ''); 
-            setTimeout(()=>{
-                setProgress(t); 
-            }); 
-        }else{
-            const v = volProgress.querySelector('.cir').style.transform.replace(/[^0-9]/g, '');
-            setVolume(v / volProgress.clientWidth);
-        }
+    setVolume(0.5, true);
+    loadSong();
+}
+
+const loadSong = () =>{
+    audio.addEventListener('timeupdate', (e) =>{
+        if(!isPlaying) return;
+        const {duration, currentTime} = e.target; 
+        const frac = currentTime / duration;
+
+        progress.querySelector('.current').style.width = `${frac * 100}%` ;
+        progress.querySelector('.cir').style.transform = `translateX(${frac * progress.clientWidth}px)`;
+        progress.querySelector('.current-time').innerHTML = timeShow(audio.currentTime);
+    });
+
+    audio.addEventListener('ended', (e) =>{
+        e.preventDefault();
+        e.stopPropagation();
+        toNextSong(true); 
     })
 
+    document.addEventListener('cirDragEnd', (e)=>{
+        if(e.detail == progress.querySelector('.progress-bar')){
+            const t = progress.querySelector('.cir').style.transform.replace(/[^0-9.]/g, ''); 
+            setTimeout(()=>{
+                setProgress(t * 1); 
+                //playSong();
+            }); 
+        }else{
+            const v = volProgress.querySelector('.cir').style.transform.replace(/[^0-9.]/g, '');
+            setVolume(v / volProgress.clientWidth);
+        }
+    }); 
+
+    document.addEventListener('cirDragMove', (e)=>{
+        if(e.detail == progress.querySelector('.progress-bar')){
+            pauseSong();
+        }
+    })
     
-    btnDrag(document.querySelector('.progress-bar'));
-    btnDrag(document.querySelector('.vol-progress')); 
+    new BtnDrag(document.querySelector('.progress-bar'));
+    new BtnDrag(document.querySelector('.vol-progress')); 
 }
 
 const setVolume = (val, f = false) =>{
@@ -79,6 +105,7 @@ const setData = (data) => {
 }
 
 const pauseSong = () =>{
+    console.log('pauseSong')
     isPlaying = false;
     btns.querySelector('.play-btn > i').classList.replace('fa-pause', 'fa-play'); 
     audio.pause();
@@ -92,6 +119,7 @@ const playSong = () => {
 }
 
 const toNextSong = (isNext) =>{
+    
     if(isNext){
         songIndex++; 
         if(songIndex > audioData.length - 1){
@@ -106,10 +134,12 @@ const toNextSong = (isNext) =>{
 
     const evt = new CustomEvent('songIndex', {detail : songIndex}); 
     document.dispatchEvent(evt); 
+
     displaySong(audioData[songIndex]);
     nowSong(songIndex);
     setProgress(0);
     playSong();
+    console.log(isPlaying)
 }
 
-export {btnCtl};
+export {btnCtl, loadSong};

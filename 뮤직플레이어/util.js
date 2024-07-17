@@ -18,6 +18,12 @@ const setStorageitem = (name, item) => {
     localStorage.setItem(name, JSON.stringify(item)); 
 }
 
+const timeShow = (time) =>{
+    const minutes = addZero(Math.floor(time / 60)); 
+    const seconds = addZero(Math.floor(time % 60));
+    return `${minutes} : ${seconds}`; 
+}
 
+const addZero = (num) => num >= 10? num : '0' + num; 
 
-export {getElement, getStorageItem, setStorageitem}; 
+export {getElement, getStorageItem, setStorageitem, timeShow, addZero}; 
