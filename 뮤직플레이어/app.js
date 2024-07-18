@@ -1,6 +1,6 @@
 import fetchData from './js/fetch.js'
 import displaySong from './js/displaySong.js'; 
-import {btnCtl, loadSong} from './js/btnCtl.js'; 
+import {btnCtl, loadSong, setSongIndex, setData} from './js/btnCtl.js'; 
 import {makeList, nowSong} from './js/makeList.js'
 
 
@@ -17,14 +17,21 @@ const init = async () =>{
         loadSong()
     });
    
-    
-
     document.addEventListener('songIndex', (e)=>{
         songIndex = e.detail; 
     });
 
-    document.addEventListener('dataUpdata', (e) =>{
+  /*   document.addEventListener('dataUpdata', (e) =>{
         data = e.detail; 
+    });  */
+
+    document.addEventListener('sortEnd', (e)=>{
+        const positions = e.detail.positions;
+        songIndex = e.detail.songIndex;
+        data = positions.map((i) => data[i]); 
+
+        setSongIndex(songIndex); 
+        setData(data);
     })
 
 }

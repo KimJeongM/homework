@@ -1,4 +1,6 @@
 import displaySong from "./displaySong.js";
+import SortItem from './sortItem.js'; 
+
 const list = document.querySelector('.list-container > .list'); 
 const makeList = (data, index) =>{
     let songIndex = index;
@@ -6,7 +8,7 @@ const makeList = (data, index) =>{
     const itemes = data.map((item, index)=>{
         const {artist, image, source, title} = item; 
         return `
-            <li class="item">
+            <li class="item ${(index==0)? 'now' : ''}">
                 <a href="#" data-music="${source}" data-id="${index}">
                     <span class="img"><img src="${image}" alt=""></span>
                     <div class="music-info">
@@ -24,7 +26,7 @@ const makeList = (data, index) =>{
         e.preventDefault(); 
         let target = e.target;
         while(target.tagName  !== 'A'){
-            target = target.parentNode; 
+            target = target.parentElement; 
             if(target.tagName == 'BODY'){
                 target = null; 
                 return; 
@@ -38,11 +40,12 @@ const makeList = (data, index) =>{
         const evt = new CustomEvent('songIndex', {detail : songIndex}); 
         document.dispatchEvent(evt); 
         document.querySelector('.play-btn').dispatchEvent(clickEvent);
-    })
+    }); 
+
+    new SortItem(list); 
 }
 
 const nowSong = (id) => {
-    console.log(id);
     [...list.querySelectorAll('.item')].forEach((item, index)=>{
         item.closest('.item').classList.remove('now')
         if(index === id * 1){
@@ -51,5 +54,6 @@ const nowSong = (id) => {
         }
     }); 
 }
+
 
 export {makeList, nowSong}

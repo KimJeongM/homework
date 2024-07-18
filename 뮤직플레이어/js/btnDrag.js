@@ -16,7 +16,7 @@ class BtnDrag{
         this.selector.addEventListener('mousedown', this.startHandler); 
         document.addEventListener('mousemove', this.moveHandler); 
         document.addEventListener('mouseup', this.endHandler); 
-        document.addEventListener('click', this.endHandler, {capture : false}); 
+        //document.addEventListener('click', this.endHandler, {capture : false}); 
     }
 
     startHandler(e){

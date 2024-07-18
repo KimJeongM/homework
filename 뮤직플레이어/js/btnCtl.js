@@ -40,6 +40,8 @@ const btnCtl = async (data, index) =>{
 }
 
 const loadSong = () =>{
+    volumeCtl(); 
+    
     audio.addEventListener('timeupdate', (e) =>{
         if(!isPlaying) return;
         const {duration, currentTime} = e.target; 
@@ -61,13 +63,14 @@ const loadSong = () =>{
             const t = progress.querySelector('.cir').style.transform.replace(/[^0-9.]/g, ''); 
             setTimeout(()=>{
                 setProgress(t * 1); 
-                //playSong();
+                playSong();
             }); 
         }else{
-            const v = volProgress.querySelector('.cir').style.transform.replace(/[^0-9.]/g, '');
-            setVolume(v / volProgress.clientWidth);
+            volumeCtl(); 
         }
     }); 
+
+    
 
     document.addEventListener('cirDragMove', (e)=>{
         if(e.detail == progress.querySelector('.progress-bar')){
@@ -79,6 +82,10 @@ const loadSong = () =>{
     new BtnDrag(document.querySelector('.vol-progress')); 
 }
 
+const volumeCtl = () =>{
+    const v = volProgress.querySelector('.cir').style.transform.replace(/[^0-9.]/g, '');
+    setVolume(v / volProgress.clientWidth);
+}
 const setVolume = (val, f = false) =>{
     audio.volume = val;
     const volBtn = document.querySelector('.volume-btn .fas'); 
@@ -134,12 +141,11 @@ const toNextSong = (isNext) =>{
 
     const evt = new CustomEvent('songIndex', {detail : songIndex}); 
     document.dispatchEvent(evt); 
-
+    console.log(songIndex)
     displaySong(audioData[songIndex]);
     nowSong(songIndex);
     setProgress(0);
     playSong();
-    console.log(isPlaying)
 }
 
-export {btnCtl, loadSong};
+export {btnCtl, loadSong, setSongIndex, setData};

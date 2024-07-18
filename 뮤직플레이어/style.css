@@ -21,10 +21,10 @@ body{display:grid; place-content:center; background:#ddd; user-select: none;}
 .wrap{height:650px; width:366px; position:relative; overflow:hidden;}
 header{position:absolute; left:0; top:0; padding:0 20px}
 header button{color:#959595;  position:absolute; left:23px; top:20px; font-size:16px;}
-.player-container{display:flex; flex-direction: column; height:100%; background:#111; padding-top:62px; /* transition:var(--transition);  */}
+.player-container{display:flex; flex-direction: column; height:100%; background:#111; padding-top:62px; transition:var(--transition); }
 
 .player-container .music-info{width:100%; flex:1 0 0 ; display:flex; flex-direction: column; align-items:center; justify-content:center; ; }
-.player-container .music-info .music-img{border-radius:8px; overflow:hidden; margin:auto 32px; /* transition:var(--transition) */; width:calc(100% - 32px - 32px)}
+.player-container .music-info .music-img{border-radius:8px; overflow:hidden; margin:auto 32px; transition:var(--transition); width:calc(100% - 32px - 32px)}
 .player-container .music-info .music-img img{width:100%; aspect-ratio: 1/1; object-fit: cover; }
 .player-container .music-info .music-text{margin-top:25px; /* width:70%; */ ; flex:0 0 0;  opacity:1}
 .player-container .music-info .title{font-size:14px; font-weight:700; text-align:center; line-height:16px; color:#fff; margin-bottom:5px; }
@@ -49,8 +49,9 @@ header button{color:#959595;  position:absolute; left:23px; top:20px; font-size:
 .player-container .progress .progress-bar .cir{display:inline-block; width:12px; height:12px; background:#fff; position:absolute; left:0; top:50%; margin-top:-6px; margin-left:-6px; border-radius:50%;  }
 .player-container .time-info{display:flex; font-size:11px; color:#777; margin-top:10px; align-items:center; justify-content: space-between;  }
 
-.list-container{position:absolute; left:0; top:180px; width:100%; height:calc(100% - 180px); background:#111; transform:translateY(100%); /* transition: var(--transition) */; overflow:auto; padding:8px 0}
-.list-container .list .item{ font-weight:700; display:flex; font-size:13px; line-height:13px; align-items:center; padding:8px 23px}
+.list-container{position:absolute; left:0; top:180px; width:100%; height:calc(100% - 180px); background:#111; transform:translateY(100%); transition: var(--transition); overflow:auto; padding:8px 0}
+.list-container .list{position:relative;}
+.list-container .list .item{ font-weight:700; display:flex; font-size:13px; line-height:13px; align-items:center; padding:8px 23px; }
 .list-container .list .item > a{display:flex; align-items:center; flex-grow:1; min-width:0}
 .list-container .list .item.is-drag, 
 .list-container .list .item.now{background:#333}
@@ -59,7 +60,7 @@ header button{color:#959595;  position:absolute; left:23px; top:20px; font-size:
 .list-container .list .item .music-info{flex:1 0 0; min-width:0}
 .list-container .list .item .music-info .title{font-size:14px; font-weight:700; line-height:16px; margin-bottom:5px; color:#fff; white-space:nowrap; text-overflow: ellipsis; overflow:hidden; min-width:0}
 .list-container .list .item .music-info .artist{font-size:12px; font-weight:400; line-height:14px; color:#aaa}
-.list-container .list .item .sort-btn{width:48px; height:48px; color:#aaa; margin-left:auto; font-size:16px; text-align:right}
+.list-container .list .item .sort-btn{width:48px; height:48px; color:#aaa; margin-left:auto; font-size:16px; text-align:right; flex-shrink:0; }
 
 .wrap.show-list.motion-ing .music-text{opacity:0}
 .wrap.show-list .music-text{opacity:1}
@@ -72,15 +73,4 @@ header button{color:#959595;  position:absolute; left:23px; top:20px; font-size:
 .wrap.show-list .list-container{transform:translateY(0)}
 
 
-/* 
-현재 있는 구조에서 transform으로 공식을 구해서 좌표를 잡는다
 
-.wrap.list-show{}
-.wrap.list-show .list-container{transform:translateY(0)}
-.wrap.list-show .player-container{background:#fff; bordeR:1px solid red}
-.wrap.list-show .music-info{flex-direction: row; flex:0; justify-content: flex-start; padding:0 20px; align-items: flex-start;}
-.wrap.list-show .music-info .music-img{margin-right:20px; flex:0 1 92px}
-.wrap.list-show .music-text{margin-top:0; width:calc(100% - 92px - 20px); padding-top:5px; background:blue; flex: 1 0 0 }
-.wrap.list-show .music-info .title{color:#111; text-align:left}
-.wrap.list-show .music-info .artist {color:#111; text-align:left}
-.wrap.list-show .music-ctrl{opacity:0} */
