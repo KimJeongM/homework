@@ -7,9 +7,13 @@ class SortItem{
         this.dragFlag = false;
         this.animation = false;
         this.items = [...this.selector.getElementsByTagName('li')];
+
+        this.touchBool = ('ontouchstart' in document); 
+        this.eventStart = this.touchBool? 'touchstart' : 'mousedown';
+        this.eventMove = this.touchBool? 'touchmove' : 'mousemove';
+        this.eventEnd = this.touchBool? 'touchend' : 'mouseup';
         
-        this.selector.addEventListener('mousedown', this.startHandler); 
-        
+        this.selector.addEventListener(this.eventStart, this.startHandler); 
     }
 
     startHandler(e){
@@ -26,7 +30,7 @@ class SortItem{
         if(!this.handler) return;
 
         this.item = this.handler.closest('.item'); 
-        this.startDragY = e.pageY;
+        this.startDragY = this.getYpos(e);
         this.itemTop = this.item.offsetTop;
         this.listHeight = this.selector.offsetHeight;
         this.itemsTop = this.items.map((item)=>item.offsetTop); 
@@ -49,14 +53,14 @@ class SortItem{
             });
         });
 
-        document.addEventListener('mousemove', this.moveHandler);
-        document.addEventListener('mouseup', this.endHandler);
+        document.addEventListener(this.eventMove, this.moveHandler);
+        document.addEventListener(this.eventEnd, this.endHandler);
     }
     
     moveHandler(e){
         if(!this.dragFlag) return; 
 
-        const top = this.itemTop + e.pageY - this.startDragY; 
+        const top = this.itemTop + this.getYpos(e) - this.startDragY; 
         const newPosition = Math.round((top / this.listHeight) * this.items.length);
        
         this.item.style.transform = `translateY(${top}px)`;
@@ -99,8 +103,8 @@ class SortItem{
             document.dispatchEvent(sortEnd);
 
             this.dragFlag = false;
-            document.removeEventListener('mousemove', this.moveHandler);
-            document.removeEventListener('mouseup', this.endHandler);
+            document.removeEventListener(this.eventMove, this.moveHandler);
+            document.removeEventListener(this.eventEnd, this.endHandler);
         }); 
 
        
@@ -110,6 +114,10 @@ class SortItem{
         const temp = array[a]; 
         array[a] = array[b]; 
         array[b] = temp;
+    }
+
+    getYpos (e) {
+        return this.touchBool? e.touches[0].pageY : e.pageY;
     }
 } 
 

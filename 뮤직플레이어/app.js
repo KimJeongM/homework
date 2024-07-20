@@ -3,6 +3,7 @@ import displaySong from './js/displaySong.js';
 import {btnCtl, loadSong, setSongIndex, setData} from './js/btnCtl.js'; 
 import {makeList, nowSong} from './js/makeList.js'
 
+/* 남은것  : localStorage / 터치 적용 */
 
 const init = async () =>{
     const url = './js/list.json';
@@ -20,10 +21,6 @@ const init = async () =>{
     document.addEventListener('songIndex', (e)=>{
         songIndex = e.detail; 
     });
-
-  /*   document.addEventListener('dataUpdata', (e) =>{
-        data = e.detail; 
-    });  */
 
     document.addEventListener('sortEnd', (e)=>{
         const positions = e.detail.positions;
