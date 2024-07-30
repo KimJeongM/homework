@@ -112,21 +112,18 @@ const setData = (data) => {
 }
 
 const pauseSong = () =>{
-    console.log('pauseSong')
     isPlaying = false;
     btns.querySelector('.play-btn > i').classList.replace('fa-pause', 'fa-play'); 
     audio.pause();
 }
 
 const playSong = () => {
-    console.log('playSong')
     isPlaying = true; 
     btns.querySelector('.play-btn > i').classList.replace('fa-play', 'fa-pause'); 
     audio.play(); 
 }
 
 const toNextSong = (isNext) =>{
-    
     if(isNext){
         songIndex++; 
         if(songIndex > audioData.length - 1){
@@ -141,7 +138,6 @@ const toNextSong = (isNext) =>{
 
     const evt = new CustomEvent('songIndex', {detail : songIndex}); 
     document.dispatchEvent(evt); 
-    console.log(songIndex)
     displaySong(audioData[songIndex]);
     nowSong(songIndex);
     setProgress(0);

@@ -4,7 +4,6 @@ const musicInfoElem = player.querySelector('.music-info');
 const progress = player.querySelector('.progress');
 
 const displaySong = (songInfo) =>{
-    console.log('display')
     const {artist, image, source, title} = songInfo; 
     const musicInfo = `
                 <div class="music-img"><img src="${image}" alt=""></div>

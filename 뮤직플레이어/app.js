@@ -20,7 +20,10 @@ const init = async () =>{
    
     document.addEventListener('songIndex', (e)=>{
         songIndex = e.detail; 
+        setSongIndex(songIndex); 
     });
+
+  
 
     document.addEventListener('sortEnd', (e)=>{
         const positions = e.detail.positions;

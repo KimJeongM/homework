@@ -53,6 +53,7 @@ class SortItem{
             });
         });
 
+        console.log(this.eventMove)
         document.addEventListener(this.eventMove, this.moveHandler);
         document.addEventListener(this.eventEnd, this.endHandler);
     }

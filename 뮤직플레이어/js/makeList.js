@@ -23,6 +23,7 @@ const makeList = (data, index) =>{
     
     list.innerHTML = itemes;
     list.addEventListener('click', (e) =>{
+        console.log('listClickEvent')
         e.preventDefault(); 
         let target = e.target;
         while(target.tagName  !== 'A'){
@@ -37,15 +38,18 @@ const makeList = (data, index) =>{
         nowSong(songIndex);
 
         const clickEvent= new Event('click', {bubbles : true});
-        const evt = new CustomEvent('songIndex', {detail : songIndex}); 
-        document.dispatchEvent(evt); 
         document.querySelector('.play-btn').dispatchEvent(clickEvent);
+
+        const songEvent = new CustomEvent('songIndex', {detail : songIndex}); 
+        document.dispatchEvent(songEvent); 
+       
     }); 
 
     new SortItem(list); 
 }
 
 const nowSong = (id) => {
+    console.log(id);
     [...list.querySelectorAll('.item')].forEach((item, index)=>{
         item.closest('.item').classList.remove('now')
         if(index === id * 1){

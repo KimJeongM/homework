@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box}
+        .box{height:100vh; background-color: azure; border:1px solid red}
+        h3 {font-size: 66px; padding:66px}
+        .char{opacity:0.2}
+  
+
+
+    </style>
+
+</head>
+<body>
+    <section class="box">box1</section>
+    <h3 class="reveal-type">Were an IT company focused on developing digital products. We work with a wide variety of modern technologies and tools, which allows us to develop solid and scalable products.</h3>
+     
+    
+    <section class="box">box2</section>
+    <script>
+        const charElem = document.querySelector('.reveal-type'); 
+        const textArr =  [...charElem.textContent]
+        const charSplit = () => {
+            charElem.textContent = ''
+            const mapping = textArr.map((item)=>{
+                const elem = document.createElement('span'); 
+                elem.className = 'char'; 
+                elem.textContent = item; 
+                charElem.append(elem)
+            }); 
+        }
+
+        charSplit(); 
+        const span = [...charElem.querySelectorAll('span')]; 
+
+        gsap.to(span, {
+            scrollTrigger : {
+                trigger : charElem,
+                start : 'top bottom', 
+                end : 'bottom center',
+                scrub : true, 
+                markers:true
+            },
+            opacity:1,
+            stagger : 0.2
+        })
+      
+    </script>
+</body>
+</html>
